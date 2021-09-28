@@ -1,5 +1,6 @@
 const express = require('express')
 const app = express()
+const bodyParser = require('body-parser')
 const cors = require('cors')
 
 app.use(express.static('build'))
@@ -7,6 +8,8 @@ app.use(express.static('build'))
 app.use(cors())
 
 app.use(express.json())
+
+app.use(bodyParser.json())
 
 let persons =  [
   {
@@ -52,6 +55,10 @@ app.post('/api/persons', (request, response) => {
   
   })
 
+app.get('/', (request, response) => {
+  response.json()
+})
+
 app.get('/api/persons', (request, response) => {
     response.json(persons)
 })
@@ -66,8 +73,6 @@ app.get('/api/persons/:id', (request, response) => {
         response.status(404).end()
     }
 })  
-
-
 
 app.delete('/api/persons/:id', (request, response) => {
     const id = Number(request.params.id)
