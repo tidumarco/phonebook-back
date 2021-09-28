@@ -77,7 +77,7 @@ app.get('/api/persons/:id', (request, response) => {
 app.delete('/api/persons/:id', (request, response) => {
     const id = Number(request.params.id)
     persons = persons.filter(person => person.id !== id)
-    response.json(person)
+    
     response.status(204).end()
 })
 
@@ -86,8 +86,6 @@ const generateId = (min, max) => {
     max = 100;
     return Math.random() * (max - min) + min;
 }
-    
-
 
 const PORT = process.env.PORT || 3001
 app.listen(PORT, () => {
