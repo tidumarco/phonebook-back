@@ -1,7 +1,7 @@
-POST http://localhost:3001/api/persons
+POST https://lit-thicket-47506.herokuapp.com/api/persons
 content-type: application/json
 
 {
     "name": "Piero Certi",
-    "number": ""
+    "number": "000"
 }

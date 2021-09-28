@@ -49,7 +49,7 @@ app.post('/api/persons', (request, response) => {
   // if (persons.some(body)) {
   //   return response.status(500).json({error: 'name or number already existing'})
   // }
-  
+  persons = persons.concat(person)
 
   response.json(person)
   
