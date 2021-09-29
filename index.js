@@ -2,6 +2,9 @@ const express = require('express')
 const app = express()
 const bodyParser = require('body-parser')
 const cors = require('cors')
+const { response } = require('express')
+const Person = require('./models/person')
+
 
 app.use(express.static('build'))
 
@@ -9,7 +12,7 @@ app.use(cors())
 
 app.use(express.json())
 
-app.use(bodyParser.json())
+// app.use(bodyParser.json())
 
 let persons =  [
   {
@@ -34,24 +37,54 @@ let persons =  [
   }
 ]
 
+//const mongoose = require('mongoose')
+
+//const url = 'mongodb+srv://fullstack:ostracismo@cluster0.wlya4.mongodb.net/phonebook'
+
+//mongoose.connect(url)
+
+// const NewPerson = mongoose.model('NewPerson', {
+//   name: String,
+//   number: String,
+//   id: Number
+// })
+
+const formatPerson = (person) => {
+  return {
+    name: person.name,
+    number: person.number,
+    id: person._id
+  }
+}
+
+const generateId = (min, max) => {
+  min = 1;
+  max = 100;
+  return Math.random() * (max - min) + min;
+}
+
+// CREATING NEW PERSON
+
 app.post('/api/persons', (request, response) => {
   const body = request.body
 
   if (body.name === undefined && persons.number === undefined) {
       return response.status(404).json({error: 'content missing'})
   }
-  const person = {
+  const person = new Person ({
       name: body.name,
       number: body.number,
       id: generateId()
-  }
+  })
+  // persons = persons.concat(person)
 
-  // if (persons.some(body)) {
-  //   return response.status(500).json({error: 'name or number already existing'})
-  // }
-  persons = persons.concat(person)
+  // response.json(person)
 
-  response.json(person)
+  person
+    .save()
+    .then(savedPerson => {
+      response.json(formatPerson(savedPerson))
+    })
   
   })
 
@@ -59,33 +92,40 @@ app.get('/', (request, response) => {
   response.json()
 })
 
+// FETCHING ALL PEOPLE
+
 app.get('/api/persons', (request, response) => {
-    response.json(persons)
+  Person
+  .find({}, {__v: 0})
+  .then(persons => {
+    response.json(persons.map(formatPerson))
+  })
 })
+
+// FETCHING ONE PERSON BY ID
 
 app.get('/api/persons/:id', (request, response) => {
-    const id = Number(request.params.id)
-    const person = persons.find(person => person.id === id)
-
-    if ( person ) {
-        response.json(person)
-    } else {
-        response.status(404).end()
-    }
+    Person
+      .findById(request.params.id)
+      .then(name => {
+        response.json(formatPerson(name))
+      })
 })  
 
+// DELETING ONE PERSON
+
 app.delete('/api/persons/:id', (request, response) => {
-    const id = Number(request.params.id)
-    persons = persons.filter(person => person.id !== id)
-    
+  Person
+  .findByIdAndRemove(request.params.id)
+  .then(result => {
     response.status(204).end()
+  })
+  .catch(error => {
+    response.status(400).send({ error: 'malformatted id' })
+  })
 })
 
-const generateId = (min, max) => {
-    min = 1;
-    max = 100;
-    return Math.random() * (max - min) + min;
-}
+
 
 const PORT = process.env.PORT || 3001
 app.listen(PORT, () => {
