@@ -12,24 +12,24 @@ const Person = mongoose.model('Person', {
   id: Number
 })
 
-const person = new Person({
-    name: "Marco Tidu",
-    number: "0185-312310",
-    id: 1
-})
-
-// Person
-//   .find({})
-//   .then(result => {
-//     result.forEach(person => {
-//       console.log(person)
-//     })
-//     mongoose.connection.close()
-//   })
-
-person
-  .save()
-  .then(response => {
-    console.log('person saved!')
+Person
+  .find({})
+  .then(result => {
+    result.forEach(person => {
+      console.log(person)
+    })
     mongoose.connection.close()
   })
+
+// const person = new Person({
+//     name: "Fulvio Speciale",
+//     number: "123-456",
+//     id: 2
+// })
+
+// person
+//   .save()
+//   .then(response => {
+//     console.log('person saved!')
+//     mongoose.connection.close()
+//   })

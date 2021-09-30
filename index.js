@@ -14,28 +14,28 @@ app.use(express.json())
 
 // app.use(bodyParser.json())
 
-// let persons =  [
-//   {
-//     name: "Arto Hellas",
-//     number: "040-123456",
-//     id: 1
-//   },
-//   {
-//     name: "Martti Tienari",
-//     number: "040-123456",
-//     id: 2
-//   },
-//   {
-//     name: "Arto Järvinen",
-//     number: "040-123456",
-//     id: 3
-//   },
-//   {
-//     name: "Lea Kutvonen",
-//     number: "040-123456",
-//     id: 4
-//   }
-// ]
+let persons =  [
+  {
+    name: "Arto Hellas",
+    number: "040-123456",
+    id: 1
+  },
+  {
+    name: "Martti Tienari",
+    number: "040-123456",
+    id: 2
+  },
+  {
+    name: "Arto Järvinen",
+    number: "040-123456",
+    id: 3
+  },
+  {
+    name: "Lea Kutvonen",
+    number: "040-123456",
+    id: 4
+  }
+]
 
 //const mongoose = require('mongoose')
 
@@ -82,9 +82,11 @@ app.post('/api/persons', (request, response) => {
 
   person
     .save()
-    .then(savedPerson => {
-      response.json(formatPerson(savedPerson))
+    .then(formatPerson)
+    .then(savedAndFormattedPerson => {
+      response.json(savedAndFormattedPerson)
     })
+    
   
   })
 
@@ -105,11 +107,20 @@ app.get('/api/persons', (request, response) => {
 // FETCHING ONE PERSON BY ID
 
 app.get('/api/persons/:id', (request, response) => {
-    Person
-      .findById(request.params.id)
-      .then(name => {
+  Person
+    .findById(request.params.id)
+    .then(name => {
+      if (note) {
         response.json(formatPerson(name))
-      })
+      } else {
+        response.status(404).end()
+      }
+      
+    })
+    .catch(error => {
+      console.log(error)
+      response.status(400).send({ error: "malformatted entry"})
+    })
 })  
 
 // DELETING ONE PERSON
@@ -121,7 +132,7 @@ app.delete('/api/persons/:id', (request, response) => {
     response.status(204).end()
   })
   .catch(error => {
-    response.status(400).send({ error: 'malformatted id' })
+    response.status(400).send({ error: "malformatted entry" })
   })
 })
 
