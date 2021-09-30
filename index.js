@@ -90,9 +90,9 @@ app.post('/api/persons', (request, response) => {
   
   })
 
-app.get('/', (request, response) => {
-  response.json()
-})
+// app.get('/', (request, response) => {
+//   response.json()
+// })
 
 // FETCHING ALL PEOPLE
 
