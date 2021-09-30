@@ -1,6 +1,6 @@
 const express = require('express')
 const app = express()
-const bodyParser = require('body-parser')
+// const bodyParser = require('body-parser')
 const cors = require('cors')
 const { response } = require('express')
 const Person = require('./models/person')
@@ -138,7 +138,7 @@ app.delete('/api/persons/:id', (request, response) => {
 
 
 
-const PORT = process.env.PORT || 3001
+const PORT = process.env.PORT //|| 3001
 app.listen(PORT, () => {
   console.log(`Server running on port ${PORT}`)
 })
