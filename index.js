@@ -37,18 +37,6 @@ let persons =  [
   }
 ]
 
-//const mongoose = require('mongoose')
-
-//const url = 'mongodb+srv://fullstack:ostracismo@cluster0.wlya4.mongodb.net/phonebook'
-
-//mongoose.connect(url)
-
-// const NewPerson = mongoose.model('NewPerson', {
-//   name: String,
-//   number: String,
-//   id: Number
-// })
-
 const formatPerson = (person) => {
   return {
     name: person.name,
@@ -90,9 +78,7 @@ app.post('/api/persons', (request, response) => {
   
   })
 
-// app.get('/', (request, response) => {
-//   response.json()
-// })
+
 
 // FETCHING ALL PEOPLE
 
