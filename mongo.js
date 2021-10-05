@@ -20,16 +20,3 @@ Person
     })
     mongoose.connection.close()
   })
-
-// const person = new Person({
-//     name: "Fulvio Speciale",
-//     number: "123-456",
-//     id: 2
-// })
-
-// person
-//   .save()
-//   .then(response => {
-//     console.log('person saved!')
-//     mongoose.connection.close()
-//   })
